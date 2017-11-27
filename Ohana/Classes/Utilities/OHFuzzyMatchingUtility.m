@@ -47,7 +47,7 @@
 - (instancetype)initWithContacts:(NSOrderedSet<OHContact *> *)contacts
 {
     if (self = [super init]) {
-        NSMutableOrderedSet<OHContactMatchNominee *> *matchNominees = [[NSMutableOrderedSet<OHContactMatchNominee *> alloc] init];
+       NSMutableOrderedSet<OHContactMatchNominee *> *matchNominees = [[NSMutableOrderedSet<OHContactMatchNominee *> alloc] init];
         for (OHContact *contact in contacts) {
             if (contact.fullName.length) {
                 OHContactMatchNominee *matchNominee = [[OHContactMatchNominee alloc] init];
@@ -55,19 +55,21 @@
                 matchNominee.contact = contact;
                 [matchNominees addObject:matchNominee];
             }
-
+            
             for (OHContactField *contactField in contact.contactFields) {
-                if (contactField.value.length) {
-                    OHContactMatchNominee *matchNominee = [[OHContactMatchNominee alloc] init];
-                    matchNominee.valueString = contactField.value;
-                    matchNominee.contact = contact;
-                    [matchNominees addObject:matchNominee];
+                if (contactField.type == OHContactFieldTypePhoneNumber)
+                {
+                    if (contactField.value.length) {
+                        OHContactMatchNominee *matchNominee = [[OHContactMatchNominee alloc] init];
+                        matchNominee.valueString = contactField.value;
+                        matchNominee.contact = contact;
+                        [matchNominees addObject:matchNominee];
+                    }
                 }
+
             }
         }
         self.matchNominees = matchNominees;
-    }
-    return self;
 }
 
 - (NSOrderedSet<OHContact *> *)contactsMatchingQuery:(NSString *)originalQuery
