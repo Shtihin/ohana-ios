@@ -57,11 +57,13 @@
             }
 
             for (OHContactField *contactField in contact.contactFields) {
+                if (contactField.type == OHContactFieldTypePhoneNumber){
                 if (contactField.value.length) {
                     OHContactMatchNominee *matchNominee = [[OHContactMatchNominee alloc] init];
                     matchNominee.valueString = contactField.value;
                     matchNominee.contact = contact;
                     [matchNominees addObject:matchNominee];
+                }
                 }
             }
         }
